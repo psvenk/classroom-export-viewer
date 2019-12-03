@@ -30,6 +30,19 @@ document.getElementById("import_upload").addEventListener("click", () => {
 // Parses an object and returns information about elements to be added
 // as children to the view element
 const getChildElems = (obj) => {
+    if (obj.version in parseElems) {
+	return(parseElems[obj.version](obj));
+    }
+    else {
+	console.log(
+`Sorry, Classroom Export Viewer does not yet support version ${obj.version}
+of Google Classroom exports.`
+	);
+    }
+}
+
+const parseElems = {};
+parseElems[1] = (obj) => {
     const childElems = [];
     childElems.push({
 	id: "className",
@@ -51,7 +64,8 @@ const createElems = (childElems, view) => {
 	    console.log(
 `Internal error in function getChildElems: duplicate ID "${elem.id}" detected.
 Please report this bug at:
-https://github.com/psvenk/classroom-export-viewer/issues`);
+https://github.com/psvenk/classroom-export-viewer/issues`
+	    );
 	    return;
 	}
 
