@@ -1,7 +1,46 @@
 {
-  "name": "classroom-export-viewer",
-  "version": "0.0.1",
-  "description": "",
-  "author": "psvenk <45520974+psvenk@users.noreply.github.com>",
-  "license": "MIT"
+    "name": "classroom-export-viewer",
+    "version": "0.0.1",
+    "description": "",
+    "private": true,
+    "author": "psvenk <45520974+psvenk@users.noreply.github.com>",
+    "license": "MIT",
+    "devDependencies": {
+	"@babel/cli": "^7.7.4",
+	"@babel/core": "^7.7.4",
+	"@babel/preset-env": "^7.7.4",
+	"@rollup/plugin-node-resolve": "^6.0.0",
+	"rollup": "^1.27.8",
+	"rollup-plugin-commonjs": "^10.1.0"
+    },
+    "scripts": {
+	"build": "mkdir -p dist && npm run build:rollup && npm run build:copy-html && npm run build:insert-version && npm run build:copy-static",
+	"build:rollup": "rollup -c",
+	"build:copy-html": "cp src/index.html dist/index.html",
+	"build:insert-version": "sed -i \"s/VERSION/$npm_package_version/g\" 'dist/index.html'",
+	"build:copy-static": "cp -rLT static dist",
+	"gh-pages": "rm -rf dist; mkdir dist; git clone -b gh-pages git@github.com:psvenk/classroom-export-viewer.git dist; rm -rf dist/*; npm run build; cd dist; git add *; git add -u *; git commit -m 'Updated the GitHub Pages site'; git push origin gh-pages; cd ..; rm -rf dist",
+	"____gh-pages-comment": "This is taken from the package.json for LearnASM by KB1RD, which can be found at <https://github.com/KB1RD/LearnASM/blob/master/package.json>."
+    },
+    "dependencies": {
+	"core-js": "^3.4.7",
+	"rollup-plugin-babel": "^4.3.3"
+    },
+    "browserslist": [
+	"since 2010",
+	"cover 96% in US",
+	"IE >= 9"
+    ],
+    "babel": {
+	"presets": [
+	    [
+		"@babel/preset-env",
+		{
+		    "modules": false,
+		    "useBuiltIns": "usage",
+		    "corejs": 3
+		}
+	    ]
+	]
+    }
 }
