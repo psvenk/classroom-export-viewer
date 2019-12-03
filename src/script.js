@@ -41,7 +41,9 @@ of Google Classroom exports.`
     }
 }
 
-const parseElems = {};
+// A family of functions to parse HTML elements from an object,
+// depending on the version
+const parseElems = [];
 parseElems[1] = (obj) => {
     const childElems = [];
     childElems.push({
@@ -49,6 +51,27 @@ parseElems[1] = (obj) => {
 	type: "h2",
 	content: obj.name || "Untitled Class"
     });
+    if (obj.section) {
+	childElems.push({
+	    id: "section",
+	    type: "p",
+	    content: `Section: ${obj.section}`
+	})
+    }
+    if (obj.room) {
+	childElems.push({
+	    id: "room",
+	    type: "p",
+	    content: `Room: ${obj.room}`
+	})
+    }
+    if (obj.descriptionHeading) {
+	childElems.push({
+	    id: "origName",
+	    type: "p",
+	    content: `Original name: ${obj.descriptionHeading}`
+	})
+    }
     return childElems;
 }
 
@@ -72,6 +95,7 @@ https://github.com/psvenk/classroom-export-viewer/issues`
 	// Create an element with the proper type and store it in an object
 	const elemObj = document.createElement(elem.type);
 	elements[elem.id] = elemObj;
+	// Stored ID coincides with ID in DOM for convenience
 	elemObj.id = elem.id;
 
 	// Set the text content of the element
