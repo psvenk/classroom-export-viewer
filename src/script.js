@@ -11,15 +11,64 @@ SPDX-License-Identifier: MIT
 "use strict";
 
 document.getElementById("import_upload").addEventListener("click", () => {
-    let file = document.getElementById("import_filepicker").files[0];
-    let reader = new FileReader();
+    const file = document.getElementById("import_filepicker").files[0];
+    const reader = new FileReader();
     reader.readAsText(file);
     reader.addEventListener("load", () => {
-	let obj = JSON.parse(reader.result);
+	// Parse JSON file and store it in a JS object
+	const obj = JSON.parse(reader.result);
 	console.log(obj);
+	
+	// Get area where class data will be displayed and clear it
+	const view = document.getElementById("view");
+	view.innerHTML = "";
 
-	var titleElem = document.createElement("h2");
-	titleElem.textContent = obj.name;
-	document.getElementById("view").appendChild(titleElem);
+	const elems = createElems(getChildElems(obj), view);
     });
 });
+
+// Parses an object and returns information about elements to be added
+// as children to the view element
+const getChildElems = (obj) => {
+    const childElems = [];
+    childElems.push({
+	id: "className",
+	type: "h2",
+	content: obj.name || "Untitled Class"
+    });
+    return childElems;
+}
+
+// Create HTML elements according to data from getChildElems and add them to
+// the view (parent element)
+const createElems = (childElems, view) => {
+    // Object to store HTML elements within the view
+    const elements = {};
+
+    // Create elements according to data from getChildElems
+    for (const elem of childElems) {
+	if (elements[elem.id] || document.getElementById(elem.id)) {
+	    console.log(
+`Internal error in function getChildElems: duplicate ID "${elem.id}" detected.
+Please report this bug at:
+https://github.com/psvenk/classroom-export-viewer/issues`);
+	    return;
+	}
+
+	// Create an element with the proper type and store it in an object
+	const elemObj = document.createElement(elem.type);
+	elements[elem.id] = elemObj;
+	elemObj.id = elem.id;
+
+	// Set the text content of the element
+	elemObj.textContent = elem.content;
+	
+	// Add the element to its parent, which must be the view (default)
+	// or a child thereof (in which case it would have an id in
+	// the object `elements`)
+	(elements[elem.parentId] || view).appendChild(elements[elem.id]);
+    }
+
+    console.log(elements);
+    return elements;
+}
