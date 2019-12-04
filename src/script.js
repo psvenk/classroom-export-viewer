@@ -19,11 +19,8 @@ document.getElementById("import_upload").addEventListener("click", () => {
         const obj = JSON.parse(reader.result);
         console.log(obj);
 
-        // Get area where class data will be displayed and clear it
-        const view = document.getElementById("view");
-        view.innerHTML = "";
-
-        const elems = createElems(getChildElems(obj), view);
+        // Populate the view
+        createElems(getChildElems(obj), document.getElementById("view"));
     });
 });
 
@@ -39,7 +36,7 @@ const getChildElems = (obj) => {
 of Google Classroom exports.`
         );
     }
-}
+};
 
 // A family of functions to parse HTML elements from an object,
 // depending on the version
@@ -51,33 +48,30 @@ parseElems[1] = (obj) => {
         type: "h2",
         content: obj.name || "Untitled Class"
     });
-    if (obj.section) {
-        childElems.push({
-            id: "section",
-            type: "p",
-            content: `Section: ${obj.section}`
-        })
-    }
-    if (obj.room) {
-        childElems.push({
-            id: "room",
-            type: "p",
-            content: `Room: ${obj.room}`
-        })
-    }
-    if (obj.descriptionHeading) {
-        childElems.push({
-            id: "origName",
-            type: "p",
-            content: `Original name: ${obj.descriptionHeading}`
-        })
-    }
+    if (obj.section) childElems.push({
+        id: "section",
+        type: "p",
+        content: `Section: ${obj.section}`
+    });
+    if (obj.room) childElems.push({
+        id: "room",
+        type: "p",
+        content: `Room: ${obj.room}`
+    });
+    if (obj.descriptionHeading) childElems.push({
+        id: "origName",
+        type: "p",
+        content: `Original name: ${obj.descriptionHeading}`
+    });
     return childElems;
-}
+};
 
 // Create HTML elements according to data from getChildElems and add them to
-// the view (parent element)
+// the area where class data will be displayed (the view)
 const createElems = (childElems, view) => {
+    // Clear the view
+    view.innerHTML = "";
+
     // Object to store HTML elements within the view
     const elements = {};
 
@@ -109,4 +103,4 @@ https://github.com/psvenk/classroom-export-viewer/issues`
 
     console.log(elements);
     return elements;
-}
+};
