@@ -63,6 +63,11 @@ parseElems[1] = (obj) => {
         type: "p",
         content: `Original name: ${obj.descriptionHeading}`
     });
+    if (obj.description) childElems.push({
+        id: "description",
+        type: "p",
+        content: `Description: ${obj.description}`
+    });
     return childElems;
 };
 
@@ -93,7 +98,7 @@ https://github.com/psvenk/classroom-export-viewer/issues`
         elemObj.id = elem.id;
 
         // Set the text content of the element
-        elemObj.textContent = elem.content;
+        elemObj.innerText = elem.content;
 
         // Add the element to its parent, which must be the view (default)
         // or a child thereof (in which case it would have an id in
