@@ -46,29 +46,58 @@ parseElems[1] = (obj) => {
     childElems.push({
         id: "className",
         type: "h2",
-        content: obj.name || "Untitled Class"
+        content: obj.name || "Untitled Class",
     });
     if (obj.section) childElems.push({
         id: "section",
         type: "p",
-        content: `Section: ${obj.section}`
+        content: `Section: ${obj.section}`,
     });
     if (obj.room) childElems.push({
         id: "room",
         type: "p",
-        content: `Room: ${obj.room}`
+        content: `Room: ${obj.room}`,
     });
     if (obj.descriptionHeading) childElems.push({
         id: "origName",
         type: "p",
-        content: `Original name: ${obj.descriptionHeading}`
+        content: `Original name: ${obj.descriptionHeading}`,
     });
-    if (obj.description) childElems.push({
-        id: "description",
-        type: "p",
-        content: `Description: ${obj.description}`
-    });
+    if (obj.description) {
+        childElems.push(
+            {
+                id: "description-toggle",
+                type: "input",
+                attrs: {
+                    type: "button",
+                    value: "Show description",
+                },
+                onclick: (_this) => {
+                    toggleElem("description")();
+                    if (_this.value == "Show description")
+                        _this.value = "Hide description";
+                    else _this.value = "Show description";
+                },
+            },
+            {
+                id: "description",
+                type: "p",
+                parent: "description-container",
+                content: `${obj.description}`,
+                style: {
+                    display: "none",
+                },
+            },
+        );
+    }
     return childElems;
+};
+
+// Returns a function to toggle the element with the given ID
+const toggleElem = (id) => () => {
+    const elem = document.getElementById(id);
+    if (elem.style.display == "none") elem.style.display = "block";
+    else elem.style.display = "none";
 };
 
 // Create HTML elements according to data from getChildElems and add them to
@@ -98,12 +127,27 @@ https://github.com/psvenk/classroom-export-viewer/issues`
         elemObj.id = elem.id;
 
         // Set the text content of the element
-        elemObj.innerText = elem.content;
+        elemObj.innerText = elem.content || "";
+
+        // Set any initial style overrides
+        for (const key in elem.style) {
+            elemObj.style.setProperty(key, elem.style[key]);
+        }
+
+        // Set attributes
+        for (const key in elem.attrs) {
+            elemObj.setAttribute(key, elem.attrs[key]);
+        }
+
+        // Add onclick event listener, passing in elemObj as an argument
+        if (elem.onclick) {
+            elemObj.addEventListener("click", () => elem.onclick(elemObj));
+        }
 
         // Add the element to its parent, which must be the view (default)
         // or a child thereof (in which case it would have an id in
         // the object `elements`)
-        (elements[elem.parentId] || view).appendChild(elements[elem.id]);
+        (elements[elem.parent] || view).appendChild(elements[elem.id]);
     }
 
     console.log(elements);

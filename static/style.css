@@ -7,3 +7,9 @@ the terms of the MIT/Expat License; see file `COPYING` for more details.
 
 SPDX-License-Identifier: MIT
 */
+
+#description {
+    border: 1px solid black;
+    margin: 0.5em 1em;
+    padding: 0.5em 1em;
+}
