@@ -21,10 +21,8 @@ SPDX-License-Identifier: MIT
 `
   },
   plugins: [
+    babel(),
     resolve(),
-    commonjs(),
-    babel({
-      exclude: 'node_modules/**'
-    })
+    commonjs()
   ]
 };
