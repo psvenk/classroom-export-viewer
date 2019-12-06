@@ -69,8 +69,8 @@ parseElems[1] = (obj) => {
                 id: "description-toggle",
                 type: "input",
                 attrs: {
-                    type: "button",
-                    value: "Show description",
+                    "type": "button",
+                    "value": "Show description",
                 },
                 onclick: (_this) => {
                     toggleElem("description")();
@@ -85,7 +85,7 @@ parseElems[1] = (obj) => {
                 parent: "description-container",
                 content: `${obj.description}`,
                 style: {
-                    display: "none",
+                    "display": "none",
                 },
             },
         );
