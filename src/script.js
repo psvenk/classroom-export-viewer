@@ -182,7 +182,6 @@ parseElems[1] = (obj) => {
 
                 // Make a description including the share mode
                 let description = " (on Google Drive";
-                console.log(`${material.driveFile.driveFile.title} ${material.driveFile.shareMode}`)
                 switch (material.driveFile.shareMode) {
                     case "VIEW":
                         description += " - students can view file)";
@@ -197,19 +196,37 @@ parseElems[1] = (obj) => {
                         description += ")";
                 }
 
-                childElems.push({
-                    id: `post-${post_id}-material-${material_id}-drive-file-description`,
-                    type: "span",
-                    parent: `post-${post_id}-materials`,
-                    content: description,
-                });
+                childElems.push(
+                    {
+                        id: `post-${post_id}-material-${material_id}-drive-file-description`,
+                        type: "span",
+                        parent: `post-${post_id}-materials`,
+                        content: description,
+                    },
+                    {
+                        id: `post-${post_id}-material-${material_id}-drive-file-br`,
+                        type: "br",
+                        parent: `post-${post_id}-materials`,
+                    },
+                );
+            }
 
-                childElems.push({
-                    id: `post-${post_id}-material-${material_id}-drive-file-br`,
+            if (material.link) childElems.push(
+                {
+                    id: `post-${post_id}-material-${material_id}-link`,
+                    type: "a",
+                    parent: `post-${post_id}-materials`,
+                    content: material.link.title,
+                    attrs: {
+                        "href": material.link.url,
+                    },
+                },
+                {
+                    id: `post-${post_id}-material-${material_id}-link-br`,
                     type: "br",
                     parent: `post-${post_id}-materials`,
-                })
-            }
+                },
+            );
         }
     }
 
