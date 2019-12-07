@@ -13,3 +13,7 @@ SPDX-License-Identifier: MIT
     margin: 0.5em 1em;
     padding: 0.5em 1em;
 }
+
+.post {
+    border: 1px solid black;
+}

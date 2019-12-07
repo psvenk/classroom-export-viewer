@@ -17,7 +17,6 @@ document.getElementById("import_upload").addEventListener("click", () => {
     reader.addEventListener("load", () => {
         // Parse JSON file and store it in a JS object
         const obj = JSON.parse(reader.result);
-        console.log(obj);
 
         // Populate the view
         createElems(getChildElems(obj), document.getElementById("view"));
@@ -44,10 +43,11 @@ const parseElems = [];
 parseElems[1] = (obj) => {
     const childElems = [];
     childElems.push({
-        id: "className",
+        id: "class-name",
         type: "h2",
         content: obj.name || "Untitled Class",
     });
+
     if (obj.section) childElems.push({
         id: "section",
         type: "p",
@@ -59,36 +59,87 @@ parseElems[1] = (obj) => {
         content: `Room: ${obj.room}`,
     });
     if (obj.descriptionHeading) childElems.push({
-        id: "origName",
+        id: "orig-name",
         type: "p",
         content: `Original name: ${obj.descriptionHeading}`,
     });
-    if (obj.description) {
-        childElems.push(
-            {
-                id: "description-toggle",
-                type: "input",
-                attrs: {
-                    "type": "button",
-                    "value": "Show description",
-                },
-                onclick: (_this) => {
-                    toggleElem("description")();
-                    if (_this.value == "Show description")
-                        _this.value = "Hide description";
-                    else _this.value = "Show description";
-                },
+    if (obj.description) childElems.push(
+        {
+            id: "description-toggle",
+            type: "input",
+            attrs: {
+                "type": "button",
+                "value": "Show description",
             },
-            {
-                id: "description",
-                type: "p",
-                parent: "description-container",
-                content: `${obj.description}`,
-                style: {
-                    "display": "none",
-                },
+            onclick: (_this) => {
+                toggleElem("description")();
+                if (_this.value == "Show description")
+                    _this.value = "Hide description";
+                else _this.value = "Show description";
             },
-        );
+        },
+        {
+            id: "description",
+            type: "p",
+            parent: "description-container",
+            content: `${obj.description}`,
+            style: {
+                "display": "none",
+            },
+        },
+    );
+    if (obj.posts) childElems.push({
+        id: "posts-heading",
+        type: "h3",
+        content: "Posts",
+    });
+
+    for (const post_id in obj.posts) {
+        // Use index of each post in posts array to give unique IDs
+
+        const post = obj.posts[post_id];
+
+        childElems.push({
+            id: `post-${post_id}`,
+            type: "div",
+            className: "post"
+        });
+
+        childElems.push({
+            id: `post-${post_id}-title`,
+            type: "h4",
+            parent: `post-${post_id}`,
+            content: post.courseWork?.title || "Untitled Post",
+        });
+
+        // Construct a string with basic post information
+        // (timestamps and creator)
+        let postInfo = [
+            post.creationTime ? `Created ${post.creationTime}` : null,
+            post.publicationTime ? `Published ${post.publicationTime}` : null,
+            post.updateTime ? `Last updated ${post.updateTime}` : null
+        ].join("; ");
+
+        // Add post's creator's name to postInfo
+        if (post.creator?.name?.fullName) {
+            if (postInfo) postInfo += " by " + post.creator.name.fullName;
+            else postInfo = "Created by " + post.creator.name.fullName;
+        }
+
+        childElems.push({
+            id: `post-${post_id}-info`,
+            type: "p",
+            parent: `post-${post_id}`,
+            content: postInfo,
+        });
+
+        childElems.push({
+            id: `post-${post_id}-desc`,
+            type: "p",
+            parent: `post-${post_id}`,
+            content: post.courseWork?.description || "No description",
+        });
+
     }
     return childElems;
 };
@@ -139,6 +190,9 @@ https://github.com/psvenk/classroom-export-viewer/issues`
             elemObj.setAttribute(key, elem.attrs[key]);
         }
 
+        // Add HTML classes
+        elemObj.className += elem.className || "";
+
         // Add onclick event listener, passing in elemObj as an argument
         if (elem.onclick) {
             elemObj.addEventListener("click", () => elem.onclick(elemObj));
@@ -150,6 +204,5 @@ https://github.com/psvenk/classroom-export-viewer/issues`
         (elements[elem.parent] || view).appendChild(elements[elem.id]);
     }
 
-    console.log(elements);
     return elements;
 };
