@@ -46,3 +46,17 @@ client-side, you can run it by visiting `dist/index.html` in a Web browser.
 
 By contributing to this project, you agree to release your
 contributions under the MIT/Expat License as detailed in the file `LICENSE`.
+
+## Frequently asked or anticipated questions
+
+### Why are only assignments displayed by Classroom Export Viewer?
+
+Unfortunately, Google does not include announcements or standalone
+materials in Google Classroom exports. If you would like to archive
+these, I would advise you to save screenshots and/or web archives
+of the Google Classroom stream (using the standard "Save as&hellip;"
+function in many Web browsers or a specialized tool such as
+[SingleFileZ](https://github.com/gildas-lormeau/SingleFileZ),
+[MozArchiver](https://addons.palemoon.org/addon/mozarchiver/),
+or a tool that works with [WARC](https://en.wikipedia.org/wiki/Web_ARChive)
+files).
