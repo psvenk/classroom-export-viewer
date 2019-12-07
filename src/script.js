@@ -112,19 +112,31 @@ parseElems[1] = (obj) => {
             content: post.courseWork?.title || "Untitled Post",
         });
 
+        const fmtDateTime = str => new Date(str).toLocaleString();
+
         // Construct a string with basic post information
         // (timestamps and creator)
         let postInfo = [
-            post.creationTime ? `Created ${post.creationTime}` : null,
-            post.publicationTime ? `Published ${post.publicationTime}` : null,
-            post.updateTime ? `Last updated ${post.updateTime}` : null
+            post.creationTime ?
+                `Created ${fmtDateTime(post.creationTime)}` : null,
+            post.publicationTime ?
+                `Published ${fmtDateTime(post.publicationTime)}` : null,
+            post.updateTime ?
+                `Last updated ${fmtDateTime(post.updateTime)}` : null
         ].join("; ");
 
-        // Add post's creator's name to postInfo
+        // Add post's creator's name and/or email address to postInfo
         if (post.creator?.name?.fullName) {
             if (postInfo) postInfo += " by " + post.creator.name.fullName;
             else postInfo = "Created by " + post.creator.name.fullName;
+            if (post.creator.emailAddress)
+                postInfo += ` <${post.creator.emailAddress}>`;
         }
+        else if (post.creator?.emailAddress) {
+            if (postInfo) postInfo += ` by <${post.creator.emailAddress}>`;
+            else postInfo = `Created by <${post.creator.emailAddress}>`
+        }
+
 
         childElems.push({
             id: `post-${post_id}-info`,
