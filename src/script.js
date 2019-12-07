@@ -152,6 +152,13 @@ parseElems[1] = (obj) => {
             content: post.courseWork?.description || "No description",
         });
 
+        if (post.courseWork?.dueTime) childElems.push({
+            id: `post-${post_id}-due`,
+            type: "p",
+            parent: `post-${post_id}`,
+            content: `Due ${fmtDateTime(post.courseWork.dueTime)}`,
+        });
+
         if (post.materials) childElems.push(
             {
                 id: `post-${post_id}-materials`,
