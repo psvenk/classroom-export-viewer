@@ -152,7 +152,67 @@ parseElems[1] = (obj) => {
             content: post.courseWork?.description || "No description",
         });
 
+        if (post.materials) childElems.push(
+            {
+                id: `post-${post_id}-materials`,
+                type: "div",
+                parent: `post-${post_id}`,
+            },
+            {
+                id: `post-${post_id}-materials-heading`,
+                type: "h4",
+                content: "Materials",
+                parent: `post-${post_id}-materials`
+            },
+        );
+
+        for (const material_id in post.materials) {
+            const material = post.materials[material_id];
+
+            if (material.driveFile?.driveFile) {
+                childElems.push({
+                    id: `post-${post_id}-material-${material_id}-drive-file`,
+                    type: "a",
+                    parent: `post-${post_id}-materials`,
+                    content: material.driveFile.driveFile.title,
+                    attrs: {
+                        "href": material.driveFile.driveFile.alternateLink,
+                    },
+                });
+
+                // Make a description including the share mode
+                let description = " (on Google Drive";
+                console.log(`${material.driveFile.driveFile.title} ${material.driveFile.shareMode}`)
+                switch (material.driveFile.shareMode) {
+                    case "VIEW":
+                        description += " - students can view file)";
+                        break;
+                    case "EDIT":
+                        description += " - students can edit file)";
+                        break;
+                    case "STUDENT_COPY":
+                        description += " - each student gets a copy)";
+                        break;
+                    default:
+                        description += ")";
+                }
+
+                childElems.push({
+                    id: `post-${post_id}-material-${material_id}-drive-file-description`,
+                    type: "span",
+                    parent: `post-${post_id}-materials`,
+                    content: description,
+                });
+
+                childElems.push({
+                    id: `post-${post_id}-material-${material_id}-drive-file-br`,
+                    type: "br",
+                    parent: `post-${post_id}-materials`,
+                })
+            }
+        }
     }
+
     return childElems;
 };
 
