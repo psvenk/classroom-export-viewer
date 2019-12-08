@@ -290,9 +290,7 @@ parseElems[1] = (obj) => {
                                 (` from ${submission.student.profile.name?.fullName}`
                                  || ` from <${submission.student.profile.emailAddress}>`) :
                                 ""),
-                            parent: submissionsLength > 1 ?
-                                    `post-${post_id}-submissions` :
-                                    `post-${post_id}`,
+                            parent: `post-${post_id}-submission-${submission_id}`,
                             className: "submission-heading",
                         },
                     );
