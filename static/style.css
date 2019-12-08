@@ -13,6 +13,18 @@ body {
     /* https://getbootstrap.com/docs/4.1/content/typography/ */
 }
 
+#license-info, #license {
+    display: block;
+    max-width: 80em;
+}
+
+#license br {
+    display: block;
+    content: "";
+    margin-top: 1em;
+}
+/* https://stackoverflow.com/a/31633969 */
+
 #description {
     border: 1px solid black;
     margin: 0.5em 1em;
