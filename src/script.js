@@ -235,6 +235,57 @@ parseElems[1] = (obj) => {
                 },
             );
         }
+
+        const submissionsLength = (post.courseWork?.submissions || []).length;
+
+        // Check if there is more than one submission (teacher account)
+        if (submissionsLength > 1) {
+            childElems.push(
+                {
+                    id: `post-${post_id}-submissions`,
+                    type: "div",
+                    parent: `post-${post_id}`,
+                },
+                {
+                    id: `post-${post_id}-submissions-heading`,
+                    type: "h4",
+                    content: "Submissions",
+                    parent: `post-${post_id}-submissions`,
+                },
+            );
+        }
+
+        if (submissionsLength > 0) {
+            for (const submission_id in post.courseWork.submissions) {
+                const submission = post.courseWork.submissions[submission_id];
+
+                // Make sure there is at least one assignment submission
+                if (Object.entries(submission.assignmentSubmission || {}).length > 0) {
+                    childElems.push(
+                        {
+                            id: `post-${post_id}-submission-${submission_id}`,
+                            type: "div",
+                            parent: submissionsLength > 1 ?
+                                    `post-${post_id}-submissions` :
+                                    `post-${post_id}`,
+                        },
+                        {
+                            id: `post-${post_id}-submission-${submission_id}-heading`,
+                            type: "h4",
+                            // Add name/email of student if there is >1 submission
+                            content: "Submission" +
+                                (submissionsLength > 1 && submission.student?.profile ?
+                                (` from ${submission.student.profile.name?.fullName}`
+                                 || ` from <${submission.student.profile.emailAddress}>`) :
+                                ""),
+                            parent: submissionsLength > 1 ?
+                                    `post-${post_id}-submissions` :
+                                    `post-${post_id}`,
+                        },
+                    );
+                }
+            }
+        }
     }
 
     return childElems;
