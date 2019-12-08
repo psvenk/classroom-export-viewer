@@ -319,10 +319,21 @@ parseElems[1] = (obj) => {
                             {
                                 id: `post-${post_id}-submission-${submission_id}-attachment-${attachment_id}-drive-file-br`,
                                 type: "br",
-                                parent: `post-${post_id}-submission-${submission_id}`
+                                parent: `post-${post_id}-submission-${submission_id}`,
                             },
                         );
                     }
+                }
+
+                if (submission.shortAnswerSubmission) {
+                    childElems.push({
+                        id: `post-${post_id}-submission-${submission_id}-short-answer`,
+                        type: "p",
+                        parent: `post-${post_id}-submission-${submission_id}`,
+                        content: "Short answer: " +
+                            (submission.shortAnswerSubmission.answer || ""),
+                        className: "submission-short-answer",
+                    });
                 }
             }
         }
