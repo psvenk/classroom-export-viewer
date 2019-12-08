@@ -8,6 +8,11 @@ the terms of the MIT/Expat License; see file `COPYING` for more details.
 SPDX-License-Identifier: MIT
 */
 
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+    /* https://getbootstrap.com/docs/4.1/content/typography/ */
+}
+
 #description {
     border: 1px solid black;
     margin: 0.5em 1em;
