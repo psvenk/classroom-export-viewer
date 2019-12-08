@@ -102,7 +102,7 @@ parseElems[1] = (obj) => {
         childElems.push({
             id: `post-${post_id}`,
             type: "div",
-            className: "post"
+            className: "post",
         });
 
         childElems.push({
@@ -110,6 +110,7 @@ parseElems[1] = (obj) => {
             type: "h4",
             parent: `post-${post_id}`,
             content: post.courseWork?.title || "Untitled Post",
+            className: "post-title",
         });
 
         const fmtDateTime = str => new Date(str).toLocaleString();
@@ -143,6 +144,7 @@ parseElems[1] = (obj) => {
             type: "p",
             parent: `post-${post_id}`,
             content: postInfo,
+            className: "post-info",
         });
 
         childElems.push({
@@ -150,6 +152,7 @@ parseElems[1] = (obj) => {
             type: "p",
             parent: `post-${post_id}`,
             content: post.courseWork?.description || "No description",
+            className: "post-desc",
         });
 
         if (post.courseWork?.dueTime) childElems.push({
@@ -157,6 +160,7 @@ parseElems[1] = (obj) => {
             type: "p",
             parent: `post-${post_id}`,
             content: `Due ${fmtDateTime(post.courseWork.dueTime)}`,
+            className: "post-due",
         });
 
         if (post.materials) childElems.push(
@@ -164,12 +168,14 @@ parseElems[1] = (obj) => {
                 id: `post-${post_id}-materials`,
                 type: "div",
                 parent: `post-${post_id}`,
+                className: "materials",
             },
             {
                 id: `post-${post_id}-materials-heading`,
                 type: "h4",
                 content: "Materials",
-                parent: `post-${post_id}-materials`
+                parent: `post-${post_id}-materials`,
+                className: "materials-heading",
             },
         );
 
@@ -182,6 +188,7 @@ parseElems[1] = (obj) => {
                     type: "a",
                     parent: `post-${post_id}-materials`,
                     content: material.driveFile.driveFile.title,
+                    className: "material-drive-file",
                     attrs: {
                         "href": material.driveFile.driveFile.alternateLink,
                     },
@@ -209,11 +216,12 @@ parseElems[1] = (obj) => {
                         type: "span",
                         parent: `post-${post_id}-materials`,
                         content: description,
+                        className: "material-drive-file-description",
                     },
                     {
                         id: `post-${post_id}-material-${material_id}-drive-file-br`,
                         type: "br",
-                        parent: `post-${post_id}-materials`,
+                        parent: `post-${post_id}-materials`
                     },
                 );
             }
@@ -224,6 +232,7 @@ parseElems[1] = (obj) => {
                     type: "a",
                     parent: `post-${post_id}-materials`,
                     content: material.link.title,
+                    className: "material-link",
                     attrs: {
                         "href": material.link.url,
                     },
@@ -245,12 +254,14 @@ parseElems[1] = (obj) => {
                     id: `post-${post_id}-submissions`,
                     type: "div",
                     parent: `post-${post_id}`,
+                    className: "submissions",
                 },
                 {
                     id: `post-${post_id}-submissions-heading`,
                     type: "h4",
                     content: "Submissions",
                     parent: `post-${post_id}-submissions`,
+                    className: "submissions-heading",
                 },
             );
         }
@@ -268,6 +279,7 @@ parseElems[1] = (obj) => {
                             parent: submissionsLength > 1 ?
                                     `post-${post_id}-submissions` :
                                     `post-${post_id}`,
+                            className: "submission",
                         },
                         {
                             id: `post-${post_id}-submission-${submission_id}-heading`,
@@ -281,6 +293,7 @@ parseElems[1] = (obj) => {
                             parent: submissionsLength > 1 ?
                                     `post-${post_id}-submissions` :
                                     `post-${post_id}`,
+                            className: "submission-heading",
                         },
                     );
                 }
