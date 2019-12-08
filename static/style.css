@@ -17,5 +17,5 @@ SPDX-License-Identifier: MIT
 .post, .materials, .submissions, .submission {
     border: 1px solid black;
     margin: 0.25em;
-    padding: 0.25em 0.75em;
+    padding: 0.25em 0.75em 0.75em;
 }
