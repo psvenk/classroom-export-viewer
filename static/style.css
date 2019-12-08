@@ -13,7 +13,7 @@ body {
     /* https://getbootstrap.com/docs/4.1/content/typography/ */
 }
 
-#license-info, #license {
+#license-info, #license code {
     display: block;
     max-width: 80em;
 }

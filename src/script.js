@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
 
 "use strict";
 
-document.getElementById("import_upload").addEventListener("click", () => {
-    const file = document.getElementById("import_filepicker").files[0];
+document.getElementById("import-upload").addEventListener("click", () => {
+    const file = document.getElementById("import-filepicker").files[0];
     const reader = new FileReader();
     reader.readAsText(file);
     reader.addEventListener("load", () => {
@@ -22,6 +22,13 @@ document.getElementById("import_upload").addEventListener("click", () => {
         createElems(getChildElems(obj), document.getElementById("view"));
     });
 });
+
+document.getElementById("license-info-toggle").addEventListener("click", () => ((_this) => {
+    toggleElem("license-info")();
+    if (_this.value == "Show license information")
+        _this.value = "Hide license information";
+    else _this.value = "Show license information";
+})(document.getElementById("license-info-toggle")));
 
 // Parses an object and returns information about elements to be added
 // as children to the view element
