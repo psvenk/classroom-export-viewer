@@ -270,30 +270,59 @@ parseElems[1] = (obj) => {
             for (const submission_id in post.courseWork.submissions) {
                 const submission = post.courseWork.submissions[submission_id];
 
-                // Make sure there is at least one assignment submission
-                if (Object.entries(submission.assignmentSubmission || {}).length > 0) {
-                    childElems.push(
-                        {
-                            id: `post-${post_id}-submission-${submission_id}`,
-                            type: "div",
-                            parent: submissionsLength > 1 ?
-                                    `post-${post_id}-submissions` :
-                                    `post-${post_id}`,
-                            className: "submission",
-                        },
-                        {
-                            id: `post-${post_id}-submission-${submission_id}-heading`,
-                            type: "h4",
-                            // Add name/email of student if there is >1 submission
-                            content: "Submission" +
-                                (submissionsLength > 1 && submission.student?.profile ?
-                                (` from ${submission.student.profile.name?.fullName}`
-                                 || ` from <${submission.student.profile.emailAddress}>`) :
-                                ""),
+                childElems.push(
+                    {
+                        id: `post-${post_id}-submission-${submission_id}`,
+                        type: "div",
+                        parent: submissionsLength > 1 ?
+                                `post-${post_id}-submissions` :
+                                `post-${post_id}`,
+                        className: "submission",
+                    },
+                    {
+                        id: `post-${post_id}-submission-${submission_id}-heading`,
+                        type: "h4",
+                        // Add name/email of student if there is >1 submission
+                        content: "Submission" +
+                            (submissionsLength > 1 && submission.student?.profile ?
+                            (` from ${submission.student.profile.name?.fullName}`
+                             || ` from <${submission.student.profile.emailAddress}>`) :
+                            ""),
+                        parent: `post-${post_id}-submission-${submission_id}`,
+                        className: "submission-heading",
+                    },
+                );
+
+                for (const attachment_id in submission.assignmentSubmission?.attachments) {
+                    const attachment = submission.assignmentSubmission.attachments[attachment_id];
+
+                    if (attachment.driveFile) {
+                        childElems.push({
+                            id: `post-${post_id}-submission-${submission_id}-attachment-${attachment_id}-drive-file`,
+                            type: "a",
                             parent: `post-${post_id}-submission-${submission_id}`,
-                            className: "submission-heading",
-                        },
-                    );
+                            content: attachment.driveFile.title,
+                            className: "submission-drive-file",
+                            attrs: {
+                                "href": attachment.driveFile.alternateLink,
+                            },
+                        });
+
+                        childElems.push(
+                            {
+                                id: `post-${post_id}-submission-${submission_id}-attachment-${attachment_id}-drive-file-description`,
+                                type: "span",
+                                parent: `post-${post_id}-submission-${submission_id}`,
+                                content: " (on Google Drive)",
+                                className: "submission-drive-file-description",
+                            },
+                            {
+                                id: `post-${post_id}-submission-${submission_id}-attachment-${attachment_id}-drive-file-br`,
+                                type: "br",
+                                parent: `post-${post_id}-submission-${submission_id}`
+                            },
+                        );
+                    }
                 }
             }
         }
