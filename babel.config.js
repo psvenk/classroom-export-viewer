@@ -1,15 +1,13 @@
-{
+module.exports = {
     "presets": [
         [
             "@babel/preset-env",
             {
-                "modules": false,
-                "useBuiltIns": "usage",
-                "corejs": 3
+                "modules": false
             }
         ]
     ],
     "plugins": [
         "@babel/plugin-proposal-optional-chaining"
     ]
-}
+};

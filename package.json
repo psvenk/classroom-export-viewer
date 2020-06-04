@@ -9,16 +9,11 @@
         "@babel/cli": "^7.10.1",
         "@babel/core": "^7.10.2",
         "@babel/plugin-proposal-optional-chaining": "^7.10.1",
-        "@babel/preset-env": "^7.10.2",
-        "@rollup/plugin-babel": "^5.0.2",
-        "@rollup/plugin-commonjs": "^12.0.0",
-        "@rollup/plugin-node-resolve": "^6.1.0",
-        "core-js": "^3.6.5",
-        "rollup": "^2.13.1"
+        "@babel/preset-env": "^7.10.2"
     },
     "scripts": {
-        "build": "mkdir -p dist && npm run build:rollup && npm run build:copy-html && npm run build:insert-version && npm run build:copy-static",
-        "build:rollup": "rollup -c",
+        "build": "rm -rf dist && mkdir -p dist && npm run build:babel && npm run build:copy-html && npm run build:insert-version && npm run build:copy-static",
+        "build:babel": "babel src --out-dir dist",
         "build:copy-html": "cp src/index.html dist/index.html",
         "build:insert-version": "sed -i \"s/VERSION/$npm_package_version/g\" 'dist/index.html'",
         "build:copy-static": "cp -rLT static dist",
